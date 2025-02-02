@@ -2,7 +2,6 @@ use account_data_api::prelude::*;
 use solana_program::hash::Hash;
 use solana_program_test::{processor, BanksClient, ProgramTest};
 use solana_sdk::{signature::Keypair, signer::Signer, transaction::Transaction};
-use steel::*;
 
 async fn setup() -> (BanksClient, Keypair, Hash) {
     let mut program_test = ProgramTest::new(
