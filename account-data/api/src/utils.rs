@@ -1,18 +1,18 @@
 use solana_program::rent::Rent;
 use steel::*;
 
-pub fn string_to_bytes<const N: usize>(s: &str) -> [u8; N] {
+pub fn string_to_bytes<const N: usize>(s: &str) -> Result<[u8; N], ProgramError> {
     let mut bytes = [0; N];
     let s_bytes = s.as_bytes();
 
     // Check length before doing any operations
-    // if s_bytes.len() > N {
-    //     return Err(ProgramError::Custom(ERROR_STRING_TOO_LONG));
-    // }
+    if s_bytes.len() > N {
+        return Err(ProgramError::InvalidAccountData);
+    }
 
     let len = s_bytes.len();
     bytes[..len].copy_from_slice(&s_bytes[..len]);
-    bytes
+    Ok(bytes)
 }
 
 pub fn bytes_to_string<const N: usize>(bytes: &[u8; N]) -> String {

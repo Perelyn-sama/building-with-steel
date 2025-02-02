@@ -22,10 +22,10 @@ async fn run_test() {
     let address_info_keypair = Keypair::new();
 
     let address_info_data = AddressInfo {
-        name: string_to_bytes("Perelyn"),
+        name: string_to_bytes("Perelyn").unwrap(),
         house_number: 1,
-        street: string_to_bytes("Turbin"),
-        city: string_to_bytes("Solana"),
+        street: string_to_bytes("Turbin").unwrap(),
+        city: string_to_bytes("Solana").unwrap(),
     };
 
     // Submit initialize transaction.
@@ -53,6 +53,4 @@ async fn run_test() {
     dbg!("data {:?}", data.data);
 
     assert_eq!(account.owner, account_data_api::ID);
-    assert!(false);
-    // assert_eq!(data.data.name, string_to_bytes::<64>("Perelyn"));
 }
