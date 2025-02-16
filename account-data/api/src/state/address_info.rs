@@ -15,7 +15,7 @@ pub struct AddressInfo {
 }
 
 impl AddressInfo {
-    pub const LEN: usize = std::mem::size_of::<AddressInfo>();
+    pub const LEN: usize = std::mem::size_of::<AddressInfo>() + 8;
 }
 
 account!(AccountDataAccount, AddressInfo);
