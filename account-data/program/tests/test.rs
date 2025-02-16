@@ -17,15 +17,15 @@ async fn setup() -> (BanksClient, Keypair, Hash) {
 #[tokio::test]
 async fn run_test() {
     // Setup test
-    let (mut banks, payer, blockhash) = setup().await;
+    let (banks, payer, blockhash) = setup().await;
 
     let address_info_keypair = Keypair::new();
 
     let address_info_data = AddressInfo {
-        name: string_to_bytes("Perelyn"),
+        name: string_to_bytes("Perelyn").unwrap(),
         house_number: 1,
-        street: string_to_bytes("Turbin"),
-        city: string_to_bytes("Solana"),
+        street: string_to_bytes("Turbine").unwrap(),
+        city: string_to_bytes("Solana").unwrap(),
     };
 
     // Submit initialize transaction.
@@ -45,14 +45,26 @@ async fn run_test() {
 
     let address = address_info_keypair.pubkey();
     let account = banks.get_account(address).await.unwrap().unwrap();
-    let data = Create::try_from_bytes(&account.data).unwrap();
+    // let data = Create::try_from_bytes(&account.data).unwrap();
+    let data = Create::try_from_bytes(&account.data[8..]).unwrap();
 
     println!("account data {:?}", &account.data);
-    println!("name {:?}", data.data.name);
-    println!("steet {:?}", data.data.street);
-    dbg!("data {:?}", data.data);
+    println!(
+        "name: {:?}",
+        bytes_to_string::<64>(&data.data.name).unwrap()
+    );
+    println!(
+        "street: {:?}",
+        bytes_to_string::<64>(&data.data.street).unwrap()
+    );
+    println!(
+        "city: {:?}",
+        bytes_to_string::<64>(&data.data.city).unwrap()
+    );
 
     assert_eq!(account.owner, account_data_api::ID);
-    assert!(false);
-    // assert_eq!(data.data.name, string_to_bytes::<64>("Perelyn"));
+    // assert!(false);
+    assert_eq!(data.data.name, string_to_bytes::<64>("Perelyn").unwrap());
+    assert_eq!(data.data.street, string_to_bytes::<64>("Turbine").unwrap());
+    assert_eq!(data.data.city, string_to_bytes::<64>("Solana").unwrap());
 }
