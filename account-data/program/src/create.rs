@@ -13,7 +13,7 @@ pub fn process_create(accounts: &[AccountInfo<'_>], data: &[u8]) -> ProgramResul
 
     system_program.is_program(&system_program::ID)?;
 
-    create_account_helper(
+    create_account(
         payer_info,
         address_info,
         system_program,
